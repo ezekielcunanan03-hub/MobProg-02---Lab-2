@@ -1,0 +1,262 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const SimplePortfolioApp());
+}
+
+class SimplePortfolioApp extends StatelessWidget {
+  const SimplePortfolioApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Portfolio',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey[100],
+      ),
+      home: const Homepage(),
+    );
+  }
+}
+
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  String selectedPage = 'Home';
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  Widget _buildHome() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ClipOval(
+          child: Image.asset(
+            'lib/assets/images/Ezekiel.jpg',
+            width: 140,
+            height: 140,
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          'Dan Ezekiel C. Cunanan',
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Aspiring Developer',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 12),
+        const SizedBox(
+          width: 300,
+          child: Text(
+            'I am a beginner developer learning programming languages and Flutter. '
+            'I enjoy creating simple apps and improving my skills step by step.',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAbout() {
+    return Card(
+      elevation: 3,
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(
+          'Hello! I am a beginner developer learning Java, C#, Python, and Dart/Flutter. '
+          'I am building small projects to improve my coding skills and gain experience in app development.',
+          style: TextStyle(fontSize: 16),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkills() {
+    final skills = {
+      'Java': 0.8,
+      'C#': 0.5,
+      'Python': 0.4,
+      'Dart / Flutter': 0.2,
+    };
+
+    return Column(
+      children: skills.entries.map((entry) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(entry.key, style: const TextStyle(fontSize: 16)),
+              const SizedBox(height: 4),
+              LinearProgressIndicator(
+                value: entry.value,
+                color: Colors.blue,
+                backgroundColor: Colors.grey[300],
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildContact() {
+    return Column(
+      children: [
+        ListTile(
+          leading: const Icon(Icons.email, color: Colors.blue),
+          title: const Text('dan.ezekiel@exampleOnly.com'),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: const Icon(Icons.phone, color: Colors.blue),
+          title: const Text('+63 912 345 6789'),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: const Icon(Icons.link, color: Colors.blue),
+          title: const Text('github.com/danez'),
+          onTap: () {},
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContent() {
+    switch (selectedPage) {
+      case 'Home':
+        return _buildHome();
+      case 'About':
+        return _buildAbout();
+      case 'Skills':
+        return _buildSkills();
+      case 'Contact':
+        return _buildContact();
+      default:
+        return Center(child: Text('Coming soon: $selectedPage'));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Portfolio',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(color: Colors.blue),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('Dan Ezekiel C. Cunanan',
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                  SizedBox(height: 4),
+                  Text('Aspiring Developer',
+                      style: TextStyle(color: Colors.white70)),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home, color: Colors.blue),
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  selectedPage = 'Home';
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person, color: Colors.blue),
+              title: const Text('About'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  selectedPage = 'About';
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.lightbulb, color: Colors.blue),
+              title: const Text('Skills'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  selectedPage = 'Skills';
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.email, color: Colors.blue),
+              title: const Text('Contact'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  selectedPage = 'Contact';
+                });
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.download, color: Colors.blue),
+              title: const Text('Download Resume'),
+              onTap: () {
+                Navigator.pop(context);
+                print('Download Resume tapped'); // Replace with actual download logic
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Center(child: _buildContent()),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+}
